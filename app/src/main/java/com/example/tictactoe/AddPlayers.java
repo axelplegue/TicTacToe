@@ -27,7 +27,7 @@ public class AddPlayers extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_players);
-        final Edgit commiitText player1 = findViewById(R.id.player1);
+        final EditText player1 = findViewById(R.id.player1);
 
         final Button startGame = findViewById(R.id.startGame);
 
