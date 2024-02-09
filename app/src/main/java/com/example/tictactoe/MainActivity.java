@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tictactoe.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -72,17 +73,24 @@ public class MainActivity extends AppCompatActivity {
         usersReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.child("User1").exists() || dataSnapshot.child("User1").getValue(String.class) == null || dataSnapshot.child("User1").getValue(String.class).equals(player1Name)) {
-                    user = 1;
-                    player1.setText(player1Name);
-                } else {
-                    user = 2;
-                    player2.setText(dataSnapshot.child("User1").getValue(String.class));
-                }
+                if (dataSnapshot.exists() && dataSnapshot.child("User1").exists() && dataSnapshot.child("User2").exists()) {
+                    String user1 = dataSnapshot.child("User1").getValue(String.class);
 
-                // Lógica para verificar el turno y asignar listeners de clic
-                if (user == turn) {
-                    assignClickListeners();
+                    if (user1 == null || user1.isEmpty() || user1.equals(player1Name)) {
+                        user = 1;
+                        player1.setText(player1Name);
+                    } else {
+                        user = 2;
+                        player2.setText(user1);
+                    }
+
+                    // Lógica para verificar el turno y asignar listeners de clic
+                    if (user == turn) {
+                        assignClickListeners();
+                    }
+                } else {
+                    // Handle missing data
+                    Toast.makeText(MainActivity.this, "Error: Data missing in Users node", Toast.LENGTH_SHORT).show();
                 }
             }
 
