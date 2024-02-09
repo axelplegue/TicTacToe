@@ -51,33 +51,16 @@ public class AddPlayers extends AppCompatActivity {
             FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
             DatabaseReference usersRef = mDatabase.getReference().child("Users");
 
-            usersRef.child("User1").addListenerForSingleValueEvent(new ValueEventListener() {
+            usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (!dataSnapshot.exists()) {
+                    // Verificar y añadir a User1 si está vacío
+                    if (!dataSnapshot.child("User1").exists() || dataSnapshot.child("User1").getValue(String.class) == null || dataSnapshot.child("User1").getValue(String.class).isEmpty()) {
                         usersRef.child("User1").setValue(player1Name);
                     } else {
-                        if (dataSnapshot.getValue(String.class) == null || dataSnapshot.getValue(String.class).isEmpty()) {
-                            usersRef.child("User1").setValue(player1Name);
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    // Handle errors here
-                }
-            });
-            usersRef.child("User2").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (!dataSnapshot.exists()) {
-                        usersRef.child("User2").setValue(player1Name);
-                    } else {
-                        if (dataSnapshot.getValue(String.class) == null || dataSnapshot.getValue(String.class).isEmpty()) {
+                        // Si User1 tiene un valor, añadir a User2 si está vacío
+                        if (!dataSnapshot.child("User2").exists() || dataSnapshot.child("User2").getValue(String.class) == null || dataSnapshot.child("User2").getValue(String.class).isEmpty()) {
                             usersRef.child("User2").setValue(player1Name);
-                        } else {
-
                         }
                     }
                 }
@@ -91,6 +74,7 @@ public class AddPlayers extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 
 
 }
