@@ -3,11 +3,12 @@ package com.example.tictactoe;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,19 +19,19 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivity extends AppCompatActivity {
     private TextView player1;
     private TextView player2;
-    ImageView a1, a2, a3, b1, b2, b3, c1, c2, c3;
-    private int turn = 1;
-    @SuppressLint("MissingInflatedId")
+    private ImageView a1, a2, a3, b1, b2, b3, c1, c2, c3;
+    private int turn;
+    private int user;
+    private String player1Name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference usersReference = mDatabase.getReference().child("Users");
-
         player1 = findViewById(R.id.player1);
         player2 = findViewById(R.id.player2);
+
         a1 = findViewById(R.id.A1);
         a2 = findViewById(R.id.A2);
         a3 = findViewById(R.id.A3);
@@ -41,153 +42,135 @@ public class MainActivity extends AppCompatActivity {
         c2 = findViewById(R.id.C2);
         c3 = findViewById(R.id.C3);
 
-        ValueEventListener usersListener = new ValueEventListener() {
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference usersReference = mDatabase.getReference().child("Users");
+        DatabaseReference turnsReference = mDatabase.getReference().child("Turn");
+
+        Intent getIntent = getIntent();
+        player1Name = getIntent.getStringExtra("player1");
+
+        // Listener para obtener el turno
+        turnsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                        String userName = userSnapshot.getValue(String.class);
-                        if (userSnapshot.getKey().equals("User1")) {
-                            player1.setText(userName);
-                        } else if (userSnapshot.getKey().equals("User2")) {
-                            player2.setText(userName);
-                        }
-                    }
+                    turn = dataSnapshot.getValue(Integer.class);
                 } else {
-                    // Manejar el caso en el que no existen usuarios
+                    turn = 1; // Por defecto, asignamos el turno 1 si no hay datos en la base de datos
+                    turnsReference.setValue(turn);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Manejar errores de lectura de Firebase si es necesario
+                Toast.makeText(MainActivity.this, "Error al obtener el turno", Toast.LENGTH_SHORT).show();
             }
-        };
+        });
 
+        // Listener para obtener el usuario y asignar turnos
+        usersReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.child("User1").exists() || dataSnapshot.child("User1").getValue(String.class) == null || dataSnapshot.child("User1").getValue(String.class).equals(player1Name)) {
+                    user = 1;
+                    player1.setText(player1Name);
+                } else {
+                    user = 2;
+                    player2.setText(dataSnapshot.child("User1").getValue(String.class));
+                }
 
+                // Lógica para verificar el turno y asignar listeners de clic
+                if (user == turn) {
+                    assignClickListeners();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Manejar errores de lectura de Firebase si es necesario
+                Toast.makeText(MainActivity.this, "Error al obtener el usuario", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void assignClickListeners() {
         a1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (turn == 1) {
-                    turn = 2;
-                    a1.setImageResource(R.drawable.close);
-                } else {
-                    turn = 1;
-                    a1.setImageResource(R.drawable.rec);
-                }
+                handleTurnLogic(a1);
             }
         });
+
         a2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (turn == 1) {
-                    turn = 2;
-                    a2.setImageResource(R.drawable.close);
-                } else {
-                    turn = 1;
-                    a2.setImageResource(R.drawable.rec);
-                }
+                handleTurnLogic(a2);
             }
         });
 
         a3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (turn == 1) {
-                    turn = 2;
-                    a3.setImageResource(R.drawable.close);
-                } else {
-                    turn = 1;
-                    a3.setImageResource(R.drawable.rec);
-                }
+                handleTurnLogic(a3);
             }
         });
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (turn == 1) {
-                    turn = 2;
-                    b1.setImageResource(R.drawable.close);
-                } else {
-                    turn = 1;
-                    b1.setImageResource(R.drawable.rec);
-                }
+                handleTurnLogic(b1);
             }
         });
-
 
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (turn == 1) {
-                    turn = 2;
-                    b2.setImageResource(R.drawable.close);
-                } else {
-                    turn = 1;
-                    b2.setImageResource(R.drawable.rec);
-                }
+                handleTurnLogic(b2);
             }
         });
-
 
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (turn == 1) {
-                    turn = 2;
-                    b3.setImageResource(R.drawable.close);
-                } else {
-                    turn = 1;
-                    b3.setImageResource(R.drawable.rec);
-                }
+                handleTurnLogic(b3);
             }
         });
-
 
         c1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (turn == 1) {
-                    turn = 2;
-                    c1.setImageResource(R.drawable.close);
-                } else {
-                    turn = 1;
-                    c1.setImageResource(R.drawable.rec);
-                }
+                handleTurnLogic(c1);
             }
         });
-
 
         c2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (turn == 1) {
-                    turn = 2;
-                    c2.setImageResource(R.drawable.close);
-                } else {
-                    turn = 1;
-                    c2.setImageResource(R.drawable.rec);
-                }
+                handleTurnLogic(c2);
             }
         });
-
 
         c3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (turn == 1) {
-                    turn = 2;
-                    c3.setImageResource(R.drawable.close);
-                } else {
-                    turn = 1;
-                    c3.setImageResource(R.drawable.rec);
-                }
+                handleTurnLogic(c3);
             }
         });
-        usersReference.addListenerForSingleValueEvent(usersListener);
     }
 
+    private void handleTurnLogic(ImageView imageView) {
+        if (user == 1) {
+            imageView.setImageResource(R.drawable.rec);
+        } else {
+            imageView.setImageResource(R.drawable.close);
+        }
+
+        // Cambiar el turno y actualizar en la base de datos
+        turn = (turn == 1) ? 2 : 1;
+        FirebaseDatabase.getInstance().getReference().child("Turn").setValue(turn);
+
+        // Desactivar los clics en la imagen después de hacer la jugada
+        imageView.setClickable(false);
     }
-
-
+}
