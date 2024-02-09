@@ -45,7 +45,14 @@ public class AddPlayers extends AppCompatActivity {
     public static void addUser(String player1Name) {
         try {
             FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-            mDatabase.getReference().child("Users").child("User1").setValue(player1Name);
+            if(mDatabase.getReference().child("Users").child("User1").equals("")){
+                mDatabase.getReference().child("Users").child("User1").setValue(player1Name);
+            }
+            else if(mDatabase.getReference().child("Users").child("User2").equals("")){
+                mDatabase.getReference().child("Users").child("User2").setValue(player1Name);
+            }
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
