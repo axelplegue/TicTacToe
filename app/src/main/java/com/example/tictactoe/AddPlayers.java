@@ -1,5 +1,6 @@
 package com.example.tictactoe;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,8 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -45,18 +49,33 @@ public class AddPlayers extends AppCompatActivity {
     public static void addUser(String player1Name) {
         try {
             FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-            if(mDatabase.getReference().child("Users").child("User1").equals("")){
-                mDatabase.getReference().child("Users").child("User1").setValue(player1Name);
-            }
-            else if(mDatabase.getReference().child("Users").child("User2").equals("")){
-                mDatabase.getReference().child("Users").child("User2").setValue(player1Name);
-            }
+            DatabaseReference usersRef = mDatabase.getReference().child("Users");
 
+            usersRef.child("User1").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (!dataSnapshot.exists()) {
+                        usersRef.child("User1").setValue(player1Name);
+                    } else {
+                        if (dataSnapshot.getValue(String.class) == null || dataSnapshot.getValue(String.class).isEmpty()) {
+                            usersRef.child("User1").setValue(player1Name);
+                        } else {
+                            if (dataSnapshot.child("User2").getValue(String.class) == null || dataSnapshot.child("User2").getValue(String.class).isEmpty()) {
+                                usersRef.child("User2").setValue(player1Name);
+                            }
+                        }
+                    }
+                }
 
-
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Handle errors here
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
 }
