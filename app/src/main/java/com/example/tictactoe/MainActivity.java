@@ -10,12 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tictactoe.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private TextView player1;
@@ -73,24 +74,16 @@ public class MainActivity extends AppCompatActivity {
         usersReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists() && dataSnapshot.child("User1").exists() && dataSnapshot.child("User2").exists()) {
-                    String user1 = dataSnapshot.child("User1").getValue(String.class);
-
-                    if (user1 == null || user1.isEmpty() || user1.equals(player1Name)) {
-                        user = 1;
-                        player1.setText(player1Name);
-                    } else {
-                        user = 2;
-                        player2.setText(user1);
-                    }
-
-                    // Lógica para verificar el turno y asignar listeners de clic
-                    if (user == turn) {
-                        assignClickListeners();
-                    }
+                if (Objects.equals(dataSnapshot.child("User1").getValue(String.class), player1Name)) {
+                    user = 1;
+                    player1.setText(player1Name);
                 } else {
-                    // Handle missing data
-                    Toast.makeText(MainActivity.this, "Error: Data missing in Users node", Toast.LENGTH_SHORT).show();
+                    user = 2;
+                    player2.setText(dataSnapshot.child("User1").getValue(String.class));
+                }
+
+                if (user == turn) {
+                    assignClickListeners();
                 }
             }
 
