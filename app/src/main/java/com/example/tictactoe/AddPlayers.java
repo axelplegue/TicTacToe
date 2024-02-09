@@ -59,10 +59,25 @@ public class AddPlayers extends AppCompatActivity {
                     } else {
                         if (dataSnapshot.getValue(String.class) == null || dataSnapshot.getValue(String.class).isEmpty()) {
                             usersRef.child("User1").setValue(player1Name);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Handle errors here
+                }
+            });
+            usersRef.child("User2").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (!dataSnapshot.exists()) {
+                        usersRef.child("User2").setValue(player1Name);
+                    } else {
+                        if (dataSnapshot.getValue(String.class) == null || dataSnapshot.getValue(String.class).isEmpty()) {
+                            usersRef.child("User2").setValue(player1Name);
                         } else {
-                            if (dataSnapshot.child("User2").getValue(String.class) == null || dataSnapshot.child("User2").getValue(String.class).isEmpty()) {
-                                usersRef.child("User2").setValue(player1Name);
-                            }
+
                         }
                     }
                 }
