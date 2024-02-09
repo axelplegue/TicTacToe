@@ -19,6 +19,7 @@
             android:background="@drawable/borderback"
             android:gravity="center">
             <TextView
+                android:id="@+id/player1"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -36,31 +37,32 @@
 
         </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/borderback"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:background="@drawable/borderback"
             android:gravity="center"
-            android:text="Player 2"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:src="@drawable/rec" />
+            <TextView
+                android:id="@+id/player2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="Player 2"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/rec" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -81,57 +83,25 @@
             >
 
             <ImageView
+                android:id="@+id/A1"
                 android:layout_width="10dp"
-                android:layout_height="wrap_content"
+                android:layout_height="130dp"
                 android:layout_weight="1"
                 android:background="@drawable/borderthings"
                 android:src="@drawable/transparent"
                 />
             <ImageView
+                android:id="@+id/A2"
                 android:layout_width="10dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="130dp"                android:layout_weight="1"
                 android:background="@drawable/borderthings"
                 android:src="@drawable/transparent"
                 />
 
             <ImageView
+                android:id="@+id/A3"
                 android:layout_width="10dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/borderthings"
-                android:src="@drawable/transparent"
-                />
-
-
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="133dp"
-            android:orientation="horizontal"
-            android:weightSum="3"
-            >
-
-            <ImageView
-                android:layout_width="10dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/borderthings"
-                android:src="@drawable/transparent"
-                />
-            <ImageView
-                android:layout_width="10dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/borderthings"
-                android:src="@drawable/transparent"
-                />
-
-            <ImageView
-                android:layout_width="10dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="130dp"                android:layout_weight="1"
                 android:background="@drawable/borderthings"
                 android:src="@drawable/transparent"
                 />
@@ -147,24 +117,57 @@
             >
 
             <ImageView
+                android:id="@+id/B1"
                 android:layout_width="10dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="130dp"                android:layout_weight="1"
                 android:background="@drawable/borderthings"
                 android:src="@drawable/transparent"
                 />
             <ImageView
+                android:id="@+id/B2"
                 android:layout_width="10dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="130dp"                android:layout_weight="1"
                 android:background="@drawable/borderthings"
                 android:src="@drawable/transparent"
                 />
 
             <ImageView
+                android:id="@+id/B3"
                 android:layout_width="10dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="130dp"                android:layout_weight="1"
+                android:background="@drawable/borderthings"
+                android:src="@drawable/transparent"
+                />
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="133dp"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            >
+
+            <ImageView
+                android:id="@+id/C1"
+                android:layout_width="10dp"
+                android:layout_height="130dp"                android:layout_weight="1"
+                android:background="@drawable/borderthings"
+                android:src="@drawable/transparent"
+                />
+            <ImageView
+                android:id="@+id/C2"
+                android:layout_width="10dp"
+                android:layout_height="130dp"                android:layout_weight="1"
+                android:background="@drawable/borderthings"
+                android:src="@drawable/transparent"
+                />
+
+            <ImageView
+                android:id="@+id/C3"
+                android:layout_width="10dp"
+                android:layout_height="130dp"                android:layout_weight="1"
                 android:background="@drawable/borderthings"
                 android:src="@drawable/transparent"
                 />
