@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
     private TextView player1;
     private TextView player2;
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         usersReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.child("User1").exists() || dataSnapshot.child("User1").getValue(String.class) == null || dataSnapshot.child("User1").getValue(String.class).equals(player1Name)) {
+                if (Objects.equals(dataSnapshot.child("User1").getValue(String.class), player1Name)) {
                     user = 1;
                     player1.setText(player1Name);
                 } else {
@@ -80,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
                     player2.setText(dataSnapshot.child("User1").getValue(String.class));
                 }
 
-                // Lógica para verificar el turno y asignar listeners de clic
                 if (user == turn) {
                     assignClickListeners();
                 }
